@@ -1,8 +1,19 @@
-import AsteroiddVFunctions as adv
-import MoondVFunctions as mdv
+import no_return_funcs as nrf
+import long_term_funcs as ltf
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+
+'''
+this generates the break even point graphs for:
+- NEAs
+- MBAs
+- moon
+
+assuming:
+- a long term mining base
+- a single-use transportation spacecraft
+'''
 
 ### VARIABLES -------------------------------------------------------------------------------------------
 rE = 6371 # radius of the earth (km)
@@ -34,16 +45,15 @@ earth_emissions_per_kg = 41.8e3         # emissions per kg pgm on earth
 MPE = 300/6                             # mass mined per day per kg launched (tonnes/tonnes so no units)
 concentration=(184.5)*10**(-6)          # concentration mass of pgm after flotation (%)
 
-mba_data = pd.read_csv('/Users/benritchie/Lunar_Orbit/MBA_dV_file.txt')
-nea_data = pd.read_csv('/Users/benritchie/Lunar_Orbit/NEA_dV_file.txt')
-mba_data = pd.read_csv('/Users/benritchie/Lunar_Orbit/MBA_dV_file.txt')
+mba_data = pd.read_csv('data/MBA_dV_file_conc.txt')
+nea_data = pd.read_csv('data/NEA_dV_file.txt')
 
-moonDV = mdv.dVtoMoon(ParkingOrbitRadius=rE+200)
+moonDV = ltf.dVtoMoon(ParkingOrbitRadius=rE+200)
 neaDV = nea_data['dV_SH'].median()
 mbaDV = mba_data['dV_SH'].median()
 
 mass_transportation_craft = 3000
-extracted_ISPP = adv.extracted_mass()
+extracted_ISPP = nrf.extracted_mass()
 payload_mass = 6000
 
 destination_list = [['Moon', moonDV], ['NEA', neaDV], ['MBA', mbaDV]]
@@ -52,7 +62,7 @@ fig,ax = plt.subplots(3, sharey=True, figsize=(6,10))
 i=0
 
 for element in destination_list:
-    launches_dict = mdv.single_use_craft(
+    launches_dict = ltf.single_use_craft(
         element[1],
         Spcrft_Ve,
         mass_transportation_craft,
@@ -70,7 +80,7 @@ for element in destination_list:
         vbo
     )
 
-    mdv.SUS_BEP_graph(
+    ltf.SUS_BEP_graph(
         launches_dict, 
         figname = element[0], 
         earth_emissions_per_kg=earth_emissions_per_kg, 
