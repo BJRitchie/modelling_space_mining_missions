@@ -1,8 +1,11 @@
-import MoondVFunctions as mdv
-import AsteroiddVFunctions as adv
+import long_term_funcs as ltf
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
+'''
+break-even point vs ∆V for a model mission
+'''
 
 rE = 6371 # radius of the earth
 
@@ -35,10 +38,11 @@ MPE = 300/6                             # mass mined per day per kg launched (to
 concentration=(184.5)*10**(-6)          # concentration mass of pgm after flotation (%)
 
 
-dataframe = mdv.bep_vs_dV(Spcrft_Ve,payload_mass,mE1,mp1_max,Isp1,mE2,mp2_max,Isp2,vbo, earth_emissions_per_kg,concentration, MPE)
+dataframe = ltf.bep_vs_dV(Spcrft_Ve,payload_mass,mE1,mp1_max,Isp1,mE2,mp2_max,Isp2,vbo, earth_emissions_per_kg,concentration, MPE)
 
 plt.scatter(np.linspace(3,15,13), dataframe['bep_time'])
 plt.xlabel('∆V (km/s)')
 plt.ylabel('Break Even Point (days)')
-plt.savefig('∆V_vs_bep')
+plt.savefig('graphs/∆V_vs_bep.png')
+
 
