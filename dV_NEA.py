@@ -1,5 +1,5 @@
 import pandas as pd
-import AsteroiddVFunctions as dv
+import no_return_funcs as dv
 
 '''
 This script generates a file of data for missions to individual near earth asteroids (NEAs)
@@ -12,7 +12,7 @@ emission ratios are based on the fuel emitted in the atmosphere upon earth launc
 
 ### Generating dataframe -----------------------------------------------------------------------------
 
-df = pd.read_csv("/Users/benritchie/Desktop/Lunar_Orbit/data/NEA_Asteroids.csv")
+df = pd.read_csv("data/NEA_Asteroids.csv")
 
 df = dv.dV_SH(df)
 
@@ -75,7 +75,7 @@ print("median of stage2: "+str(df['mPropStage2'].median()))
 dfcsv = df.to_csv()
 
 # creating csv with data for asteroids
-f = open('NEAdV_file_w_conc.txt', 'w')
+f = open('data/NEAdV_file_w_conc.txt', 'w')
 f.write(dfcsv)
 f.close()
 
